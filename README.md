@@ -20,7 +20,7 @@ after watching a platformer game tutorial (https://www.youtube.com/watch?v=Icd2g
 - Add more levels
 - add sprites to game instead of just squares for player, walls, and enemy
 - add power ups
-  - jump
+  - jump boost
   - size increase
   - speed increase
 - add home screen/pause screen
