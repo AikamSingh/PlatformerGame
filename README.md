@@ -14,11 +14,10 @@ after watching a platformer game tutorial (https://www.youtube.com/watch?v=Icd2g
 - HAVE FUN
 
 ## TO DO:
-- make enemies
 - make multiple coins appear at the same time
 - Add replay button
 - Add more levels
-- add sprites to game instead of just squares for player, walls, and enemy
+- add sprites to walls
 - add power ups
   - jump boost
   - size increase
