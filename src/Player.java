@@ -24,6 +24,12 @@ public class Player {
     boolean keyDown;
 
 
+    /**
+     * constructor for the player class
+     * @param x x position of player
+     * @param y y position of player
+     * @param panel panel which the character will appear in
+     */
     public Player(int x, int y, GamePanel panel){
         this.panel =  panel;
         this.x = x;
@@ -33,6 +39,11 @@ public class Player {
         hitBox = new Rectangle(x, y, width, height);
     }
 
+    /**
+     * contains the logic which determines collision with walls, coins
+     * also determines how the player can move
+     * controls the amt of lives left of the player based on x position
+     */
     public void set(){
         //allows player to move left and right
         if(keyLeft && keyRight || !keyLeft && !keyRight){
@@ -109,7 +120,7 @@ public class Player {
 
         for(Coin coin : panel.coins){
             if(hitBox.intersects(coin.hitBox)){
-                panel.points++;
+                panel.points += 100;
                 panel.coins.clear();
                 panel.spawnCoins();
             }
@@ -121,11 +132,20 @@ public class Player {
         }
     }
 
+    /**
+     * draws the player
+     * @param gtd graphics variable
+     */
     public void draw(Graphics2D gtd){
         gtd.setColor(Color.BLACK);
         gtd.fillRect(x, y, width, height);
     }
 
+    /**
+     * sets the color of the player... will implement later
+     * @param gtd graphics variable
+     * @param color color to set player
+     */
     public void setColor(Graphics2D gtd, Color color){
         gtd.setColor(color);
     }

@@ -18,7 +18,8 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
     int lives;
     Player player;
 
-    boolean cancel;
+    boolean dead;
+    boolean timeUp;
     boolean pause;
     boolean home;
 
@@ -44,6 +45,10 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
     Font endFont = new Font("Arial", Font.BOLD, 45);
 
 
+    /**
+     * constructor for class GamePanel
+     * will be main panel in which the game takes place
+     */
     public GamePanel() {
         restartRect = new Rectangle(550, 25, 50, 50);
         homeRect = new Rectangle(625, 25, 50, 50);
@@ -53,9 +58,10 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         walls = new ArrayList<>(); //creates a list of blocks
         coins = new ArrayList<>(); //creates a list of coins
 
-        cancel = false;
+        dead = false;
         pause = false;
         home = false;
+        timeUp = false;
 
 
         reset();
@@ -63,7 +69,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         time = 60000;
         lives = 3;
 
-        points = 0;
+        points = 000;
         spawnCoins();
 
         gameTimer = new Timer();
@@ -71,6 +77,10 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
 
         gameTimer.schedule(new TimerTask() {
 
+            /**
+             * this is the main function that will manage what happens during each frame
+             * ticks once per 17 milisec bc that equates to 60 fps
+             */
             @Override
             public void run() {
                 if(walls.get(walls.size() - 1).x < 800){
@@ -84,7 +94,11 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
                 enemy.set();
 
                 if(lives <= 0){
-                    cancel = true;
+                    dead = true;
+                    gameTimer.cancel();
+                }
+                if(time <= 0){
+                    timeUp = true;
                     gameTimer.cancel();
                 }
 
@@ -92,6 +106,12 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
             }
         }, 0, 17);
     }
+
+    /**
+     * this method manages how the walls are created
+     * there is a way to implement more than 1 level built in via the index variable
+     * @param offset offset of walls
+     */
     public void makeWalls(int offset) {
         int s = 25;
         int index = 0; //will add more levels later
@@ -159,6 +179,10 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
          }
     }
 
+    /**
+     * manages how the coins are spawned into the game
+     * only 1 coin can exist at a time
+     */
     public void spawnCoins(){
         int coinX = (int) (Math.random() * 625) + 50;
         int coinY = (int) (Math.random() * 625) + 50;
@@ -187,6 +211,10 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         }
     }
 
+    /**
+     * this method controls how the game resets itself
+     * depending on certain values such as the time left in the game and the lives left, different things get reset
+     */
     public void reset(){
         player.x = 350;
         player.y = 450;
@@ -196,16 +224,24 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         enemy.yspeed = 0;
         player.xspeed = 0;
         player.yspeed = 0;
-        time = 60000;
         walls.clear();
         coins.clear();
         spawnCoins();
+
+        if(lives < 1){
+            points = 0;
+            time = 60000;
+        }
 
         offset = -150;
         makeWalls(offset);
 
     }
 
+    /**
+     * @param g the <code>Graphics</code> context in which to paint
+     * this manages painting all the graphics of the game
+     */
     public void paint(Graphics g){
         super.paint(g);
 
@@ -237,9 +273,9 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         gtd.setFont(scoreFont);
         gtd.drawString("Lives: " + lives, 50, 50);
         gtd.drawString("Score: " + points, 120, 50);
-        gtd.drawString("Time: " + Math.round((time/1000) * timerDecimals) / timerDecimals, 190, 50);
+        gtd.drawString("Time: " + Math.round((time/1000) * timerDecimals) / timerDecimals, 210, 50);
 
-        if(cancel){ //end screen
+        if(dead){ //end screen
             walls.clear();
             coins.clear();
             player.x = 800;
@@ -251,8 +287,24 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
             gtd.setColor(Color.BLACK);
             gtd.drawString("Score: " + points, 270, 400);
         }
+        if(timeUp){ //end screen
+            walls.clear();
+            coins.clear();
+            player.x = 800;
+            enemy.x = 800;
+            this.setBackground(Color.WHITE);
+            gtd.setFont(endFont);
+            gtd.setColor(Color.RED);
+            gtd.drawString("TIMES UP!", 220, 350);
+            gtd.setColor(Color.BLACK);
+            gtd.drawString("Score: " + points, 270, 400);
+        }
     }
 
+    /**
+     * this method listens for a key pressed
+     * @param e event listener variable
+     */
     public void keyPressed(KeyEvent e) {
         if(e.getKeyChar() == 'a'){
             player.keyLeft = true;
@@ -276,6 +328,10 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
 
     }
 
+    /**
+     * this method manages when a key is released
+     * @param e event listener variable
+     */
     public void keyReleased(KeyEvent e) {
         if(e.getKeyChar() == 'a'){
             player.keyLeft = false;
@@ -297,6 +353,10 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
 
     }
 
+    /**
+     * this method manages when the user clicks on the reset button using their mouse cursor
+     * @param e event listener variable
+     */
     public void mouseClicked(MouseEvent e) {
         if (restartRect.contains(new Point(e.getPoint().x, e.getPoint().y - 52))) {
             reset();

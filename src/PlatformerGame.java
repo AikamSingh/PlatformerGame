@@ -9,6 +9,11 @@ import java.awt.*;
  */
 
 public class PlatformerGame {
+
+    /**
+     * main function for the game
+     * controls the window attributes
+     */
     public static void main(String[] args) {
         MainFrame frame = new MainFrame();
 

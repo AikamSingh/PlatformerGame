@@ -25,6 +25,14 @@ public class Enemy {
     Rectangle hitBox;
     GamePanel panel;
 
+    /**
+     * constructor for the class enemy
+     * @param x x pos
+     * @param y y pos
+     * @param height height of enemy
+     * @param width width of enemy
+     * @param panel panel which the enemy will appear in
+     */
     public Enemy(int x, int y, int height, int width, GamePanel panel) {
         this.x = x;
         this.y = y;
@@ -35,6 +43,9 @@ public class Enemy {
         startDir = (int) (Math.random() * 2) + 1;
     }
 
+    /**
+     * controls logic for collision and movement of the enemy
+     */
     public void set(){
         //collision with floor
         yspeed += 0.45;
@@ -98,14 +109,10 @@ public class Enemy {
         hitBox.y = y;
     }
 
-    public void moveLeft(){
-        xspeed--;
-    }
-
-    public void moveRight(){
-        xspeed++;
-    }
-
+    /**
+     * draws the enemy
+     * @param gtd graphics variable
+     */
     public void draw(Graphics2D gtd){
         gtd.setColor(Color.RED);
         gtd.fillRect(x, y, width, height);

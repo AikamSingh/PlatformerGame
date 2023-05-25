@@ -17,6 +17,13 @@ public class Wall {
 
     Rectangle hitBox;
 
+    /**
+     * constructor for the wall class
+     * @param x x pos
+     * @param y y pos
+     * @param width width of wall
+     * @param height height of wall
+     */
     public Wall(int x, int y, int width, int height){
         this.x = x;
         this.y = y;
@@ -28,6 +35,10 @@ public class Wall {
     }
 
 
+    /**
+     * draws the wall
+     * @param gtd graphics variable
+     */
     public void draw(Graphics2D gtd) {
         gtd.setColor(Color.BLACK);
         gtd.drawRect(x, y, width, height);

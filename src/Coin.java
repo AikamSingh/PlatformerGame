@@ -17,6 +17,13 @@ public class Coin {
 
     private Image image;
 
+    /**
+     * constructor for coin class
+     * @param x x pos
+     * @param y y pos
+     * @param height height of coin
+     * @param width width of coin
+     */
     public Coin(int x, int y, int height, int width) {
         this.x = x;
         this.y = y;
@@ -26,6 +33,10 @@ public class Coin {
         image = Toolkit.getDefaultToolkit().getImage("Assets/Coin.png");
     }
 
+    /**
+     * draws coin
+     * @param gtd graphics variable
+     */
     public void draw(Graphics2D gtd) {
         gtd.setColor(Color.BLACK);
         gtd.drawRect(x, y, width, height);
