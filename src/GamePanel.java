@@ -23,11 +23,14 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
     boolean pause;
     boolean home;
 
+    int tempPoints;
+
     Enemy enemy; //will change to arraylist later
 
     ArrayList<Wall> walls;
 
     ArrayList<Coin> coins;
+    ArrayList<Enemy> enemies;
     int offset;
 
     Timer gameTimer;
@@ -54,9 +57,9 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         homeRect = new Rectangle(625, 25, 50, 50);
 
         player = new Player(400, 300, this); //creates a new player
-        enemy = new Enemy(100, 100, 30, 30, this);
         walls = new ArrayList<>(); //creates a list of blocks
         coins = new ArrayList<>(); //creates a list of coins
+        enemies = new ArrayList<>(); //creates a list of enemies
 
         dead = false;
         pause = false;
@@ -69,17 +72,19 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         time = 60000;
         lives = 3;
 
-        points = 000;
+        points = 0;
+        tempPoints = 0;
         spawnCoins();
+        spawnEnemies();
 
         gameTimer = new Timer();
         countdown = new Timer();
 
         gameTimer.schedule(new TimerTask() {
 
-            /**
+            /*
              * this is the main function that will manage what happens during each frame
-             * ticks once per 17 milisec bc that equates to 60 fps
+             * ticks once per 17 milliseconds bc that equates to 60 fps
              */
             @Override
             public void run() {
@@ -91,7 +96,10 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
                 time -= 17;
 
                 player.set();
-                enemy.set();
+
+                if(enemies.size() > 0){
+                    enemies.get(0).set();
+                }
 
                 if(lives <= 0){
                     dead = true;
@@ -197,7 +205,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         }
 
         if(coins.size() == 0){
-            coins.add(new Coin(coinX, coinY, 15, 15));
+            coins.add(new Coin(coinX, coinY, 20, 17));
             for(Wall wall: walls){
                 if(coins.get(0).hitBox.intersects(wall.hitBox)){
                     System.out.println("INTERSECTS WITH WALL");
@@ -211,6 +219,18 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         }
     }
 
+
+    public void spawnEnemies(){
+        int enemyX = (int) (Math.random() * 625) + 50;
+
+        if(enemies.size() == 0){
+            enemies.add(new Enemy(enemyX, 100, 30, 30, this));
+        }
+        else{
+            coins.remove(0);
+        }
+    }
+
     /**
      * this method controls how the game resets itself
      * depending on certain values such as the time left in the game and the lives left, different things get reset
@@ -218,10 +238,6 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
     public void reset(){
         player.x = 350;
         player.y = 450;
-        enemy.x = 100;
-        enemy.y = 100;
-        enemy.xspeed = 0;
-        enemy.yspeed = 0;
         player.xspeed = 0;
         player.yspeed = 0;
         walls.clear();
@@ -229,6 +245,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         spawnCoins();
 
         if(lives < 1){
+            tempPoints = points;
             points = 0;
             time = 60000;
         }
@@ -248,7 +265,11 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         Graphics2D gtd = (Graphics2D) g;
 
         player.draw(gtd);
-        enemy.draw(gtd);
+
+
+        for(Enemy e : enemies){
+            e.draw(gtd);
+        }
 
 
         for(Wall wall: walls){
@@ -276,26 +297,58 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         gtd.drawString("Time: " + Math.round((time/1000) * timerDecimals) / timerDecimals, 210, 50);
 
         if(dead){ //end screen
+            gtd.setColor(Color.WHITE);
             walls.clear();
             coins.clear();
+            enemies.clear();
+
             player.x = 800;
-            enemy.x = 800;
+
+            gtd.setColor(Color.WHITE);
+            gtd.setFont(scoreFont);
+            gtd.drawRect(50, 0, 400, 50);
+            gtd.fillRect(50, 0, 400, 50);
+            gtd.drawRect(525, 50, 50, 50);
+            gtd.drawRect(600, 50, 50, 50);
+            gtd.fillRect(526, 50, 50, 50);
+            gtd.fillRect(601, 50, 50, 50);
+
+            gtd.setFont(buttonFont);
+            gtd.drawString("R", 539, 85);
+            gtd.drawString("H", 614, 85);
+
             this.setBackground(Color.WHITE);
             gtd.setFont(endFont);
             gtd.setColor(Color.RED);
-            gtd.drawString("GAME OVER", 220, 350);
+            gtd.drawString("GAME OVER", 220, 300);
             gtd.setColor(Color.BLACK);
-            gtd.drawString("Score: " + points, 270, 400);
+            gtd.drawString("Score: " + tempPoints, 245, 350);
         }
         if(timeUp){ //end screen
+            gtd.setColor(Color.WHITE);
             walls.clear();
             coins.clear();
+            enemies.clear();
+
             player.x = 800;
-            enemy.x = 800;
+
+            gtd.setColor(Color.WHITE);
+            gtd.setFont(scoreFont);
+            gtd.drawRect(50, 0, 400, 50);
+            gtd.fillRect(50, 0, 400, 50);
+            gtd.drawRect(525, 50, 50, 50);
+            gtd.drawRect(600, 50, 50, 50);
+            gtd.fillRect(526, 50, 50, 50);
+            gtd.fillRect(601, 50, 50, 50);
+
+            gtd.setFont(buttonFont);
+            gtd.drawString("R", 539, 85);
+            gtd.drawString("H", 614, 85);
+
             this.setBackground(Color.WHITE);
             gtd.setFont(endFont);
             gtd.setColor(Color.RED);
-            gtd.drawString("TIMES UP!", 220, 350);
+            gtd.drawString("TIMES UP!", 230, 350);
             gtd.setColor(Color.BLACK);
             gtd.drawString("Score: " + points, 270, 400);
         }

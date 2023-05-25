@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -16,13 +17,14 @@ public class Player {
     int height;
     double xspeed;
     double yspeed;
+    boolean facingRight = false;
     Rectangle hitBox;
 
     boolean keyLeft;
     boolean keyRight;
     boolean keyUp;
     boolean keyDown;
-
+    private String image = "/Assets/PlayerLeft.png";
 
     /**
      * constructor for the player class
@@ -130,6 +132,13 @@ public class Player {
             panel.lives--;
             panel.reset();
         }
+
+        for(Enemy e : panel.enemies){
+            if(hitBox.intersects(e.hitBox)){
+                panel.lives--;
+                panel.reset();
+            }
+        }
     }
 
     /**
@@ -137,17 +146,31 @@ public class Player {
      * @param gtd graphics variable
      */
     public void draw(Graphics2D gtd){
+        Image playerimg = getPlayerImage();
+        if (xspeed < 0 ){
+            facingRight = true;
+        }
+        else if (xspeed > 0) {
+            facingRight = false;
+        }
+        if(facingRight){
+            gtd.drawImage(playerimg, x, y, width, height, null);
+        }
+        else {
+            gtd.drawImage(playerimg, x+25, y, -width, height, null);
+        }
+
+        /*
         gtd.setColor(Color.BLACK);
-        gtd.fillRect(x, y, width, height);
+        gtd.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
+         */
+
     }
 
-    /**
-     * sets the color of the player... will implement later
-     * @param gtd graphics variable
-     * @param color color to set player
-     */
-    public void setColor(Graphics2D gtd, Color color){
-        gtd.setColor(color);
+    public Image getPlayerImage() {
+        ImageIcon i = new ImageIcon(getClass().getResource(image));
+        return i.getImage();
+
     }
 
 

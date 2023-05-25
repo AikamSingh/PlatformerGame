@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 
@@ -15,7 +16,7 @@ public class Coin {
     int width;
     Rectangle hitBox;
 
-    private Image image;
+    private String image = "/Assets/Coin.png";
 
     /**
      * constructor for coin class
@@ -29,19 +30,21 @@ public class Coin {
         this.y = y;
         this.height = height;
         this.width = width;
-        hitBox = new Rectangle(x, y, width, height);
-        image = Toolkit.getDefaultToolkit().getImage("Assets/Coin.png");
+        hitBox = new Rectangle(this.x, this.y, this.width, this.height);
     }
 
     /**
-     * draws coin
+     * draws coin with coin image
      * @param gtd graphics variable
      */
     public void draw(Graphics2D gtd) {
-        gtd.setColor(Color.BLACK);
-        gtd.drawRect(x, y, width, height);
-        gtd.setColor(Color.YELLOW);
-        gtd.fillRect(x + 1, y + 1, width - 2, height - 2);
+        gtd.drawImage(getCoinImage(), x, y, width, height, null);
+    }
+
+    public Image getCoinImage() {
+        ImageIcon i = new ImageIcon(getClass().getResource(image));
+        return i.getImage();
+
     }
 
 

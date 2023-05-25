@@ -1,4 +1,6 @@
+import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * write description
@@ -17,6 +19,8 @@ public class Enemy {
     int startDir;
 
     boolean dir = true;
+
+    private String image = "/Assets/Enemy.png";
 
     int boundaryLeft = 30;
     int boundaryRight = 670;
@@ -62,11 +66,11 @@ public class Enemy {
         if(xspeed < 0 && xspeed > -0.75){
             xspeed = 0;
         }
-        if(xspeed > 3){
-            xspeed = 3;
+        if(xspeed > 5){
+            xspeed = 5;
         }
-        if(xspeed < -3){
-            xspeed = -3;
+        if(xspeed < -5){
+            xspeed = -5;
         }
 
 
@@ -107,6 +111,11 @@ public class Enemy {
 
         hitBox.x = x;
         hitBox.y = y;
+
+        if(y > 800){
+            panel.enemies.clear();
+            panel.spawnEnemies();
+        }
     }
 
     /**
@@ -114,7 +123,12 @@ public class Enemy {
      * @param gtd graphics variable
      */
     public void draw(Graphics2D gtd){
-        gtd.setColor(Color.RED);
-        gtd.fillRect(x, y, width, height);
+        gtd.drawImage(getEnemyImage(), x, y, width, height, null);
+    }
+
+    public Image getEnemyImage() {
+        ImageIcon i = new ImageIcon(Objects.requireNonNull(getClass().getResource(image)));
+        return i.getImage();
+
     }
 }
