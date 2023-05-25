@@ -1,9 +1,11 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.*;
+import java.util.Timer;
 
 /**
  * write description
@@ -25,10 +27,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
 
     int tempPoints;
 
-    Enemy enemy; //will change to arraylist later
-
     ArrayList<Wall> walls;
-
     ArrayList<Coin> coins;
     ArrayList<Enemy> enemies;
     int offset;
@@ -46,6 +45,9 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
     Font scoreFont = new Font("Arial", Font.BOLD, 15);
 
     Font endFont = new Font("Arial", Font.BOLD, 45);
+
+    private String heart = "Assets/heart.png";
+    ImageIcon i = new ImageIcon(Objects.requireNonNull(getClass().getResource(heart)));
 
 
     /**
@@ -280,7 +282,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
             coin.draw(gtd);
         }
 
-        gtd.setColor(Color.BLACK);
+        gtd.setColor(Color.WHITE);
         gtd.drawRect(525, 50, 50, 50);
         gtd.drawRect(600, 50, 50, 50);
         gtd.setColor(Color.WHITE);
@@ -291,10 +293,36 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         gtd.drawString("R", 539, 85);
         gtd.drawString("H", 614, 85);
 
+        gtd.setColor(Color.WHITE);
         gtd.setFont(scoreFont);
-        gtd.drawString("Lives: " + lives, 50, 50);
-        gtd.drawString("Score: " + points, 120, 50);
-        gtd.drawString("Time: " + Math.round((time/1000) * timerDecimals) / timerDecimals, 210, 50);
+        gtd.drawString("Lives: ", 50, 50);
+        gtd.drawImage(i.getImage(), 95, 37, 15, 15, null);
+        gtd.drawImage(i.getImage(), 115, 37, 15, 15, null);
+        gtd.drawImage(i.getImage(), 135, 37, 15, 15, null);
+        gtd.drawString("Score: " + points, 160, 50);
+        gtd.drawString("Time: " + Math.round((time/1000) * timerDecimals) / timerDecimals, 240, 50);
+
+        if(lives == 2){
+            gtd.setColor(Color.BLACK);
+            gtd.drawRect(135, 37, 16, 16);
+            gtd.fillRect(135, 37, 16, 16);
+        }
+        if(lives == 1){
+            gtd.setColor(Color.BLACK);
+            gtd.drawRect(115, 37, 16, 16);
+            gtd.fillRect(115, 37, 16, 16);
+            gtd.drawRect(135, 37, 16, 16);
+            gtd.fillRect(135, 37, 16, 16);
+        }
+        if(lives == 0){
+            gtd.setColor(Color.BLACK);
+            gtd.drawRect(95, 37, 16, 16);
+            gtd.fillRect(95, 37, 16, 16);
+            gtd.drawRect(115, 37, 16, 16);
+            gtd.fillRect(115, 37, 16, 16);
+            gtd.drawRect(135, 37, 16, 16);
+            gtd.fillRect(135, 37, 16, 16);
+        }
 
         if(dead){ //end screen
             gtd.setColor(Color.WHITE);
@@ -306,8 +334,8 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
 
             gtd.setColor(Color.WHITE);
             gtd.setFont(scoreFont);
-            gtd.drawRect(50, 0, 400, 50);
-            gtd.fillRect(50, 0, 400, 50);
+            gtd.drawRect(50, 0, 400, 100);
+            gtd.fillRect(50, 0, 400, 100);
             gtd.drawRect(525, 50, 50, 50);
             gtd.drawRect(600, 50, 50, 50);
             gtd.fillRect(526, 50, 50, 50);
@@ -322,7 +350,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
             gtd.setColor(Color.RED);
             gtd.drawString("GAME OVER", 220, 300);
             gtd.setColor(Color.BLACK);
-            gtd.drawString("Score: " + tempPoints, 245, 350);
+            gtd.drawString("Score: " + tempPoints, 240, 350);
         }
         if(timeUp){ //end screen
             gtd.setColor(Color.WHITE);
@@ -334,8 +362,8 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
 
             gtd.setColor(Color.WHITE);
             gtd.setFont(scoreFont);
-            gtd.drawRect(50, 0, 400, 50);
-            gtd.fillRect(50, 0, 400, 50);
+            gtd.drawRect(50, 0, 400, 100);
+            gtd.fillRect(50, 0, 400, 100);
             gtd.drawRect(525, 50, 50, 50);
             gtd.drawRect(600, 50, 50, 50);
             gtd.fillRect(526, 50, 50, 50);
@@ -348,7 +376,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
             this.setBackground(Color.WHITE);
             gtd.setFont(endFont);
             gtd.setColor(Color.RED);
-            gtd.drawString("TIMES UP!", 230, 350);
+            gtd.drawString("YOU WIN!", 230, 350);
             gtd.setColor(Color.BLACK);
             gtd.drawString("Score: " + points, 270, 400);
         }

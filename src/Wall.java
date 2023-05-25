@@ -1,4 +1,6 @@
+import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 /**
  * write description
@@ -16,6 +18,8 @@ public class Wall {
     int startX;
 
     Rectangle hitBox;
+
+    private String image = "/Assets/BrickWallCropped.png";
 
     /**
      * constructor for the wall class
@@ -40,9 +44,11 @@ public class Wall {
      * @param gtd graphics variable
      */
     public void draw(Graphics2D gtd) {
-        gtd.setColor(Color.BLACK);
-        gtd.drawRect(x, y, width, height);
-        gtd.setColor(Color.WHITE);
-        gtd.fillRect(x + 1, y + 1, width - 2, height - 2);
+        gtd.drawImage(getWallImg(), x, y, width, height, null);
+    }
+    public Image getWallImg() {
+        ImageIcon i = new ImageIcon(Objects.requireNonNull(getClass().getResource(image)));
+        return i.getImage();
+
     }
 }
