@@ -11,14 +11,19 @@ public class MainFrame extends javax.swing.JFrame{
 
 
     public MainFrame(){
-        GamePanel panel = new GamePanel();
-        panel.setLocation(0,0);
-        panel.setSize(this.getSize());
-        panel.setBackground(Color.LIGHT_GRAY);
-        panel.setVisible(true);
-        this.add(panel);
+        GamePanel gamePanel = new GamePanel();
+        //HomePanel homePanel = new HomePanel();
 
-        addKeyListener(new KeyChecker(panel));
+
+        gamePanel.setLocation(0,0);
+        gamePanel.setSize(this.getSize());
+        gamePanel.setBackground(Color.LIGHT_GRAY);
+        gamePanel.setVisible(true);
+        this.add(gamePanel);
+
+
+        addKeyListener(new KeyChecker(gamePanel));
+        addMouseListener(new MouseChecker(gamePanel));
     }
 
 
