@@ -17,7 +17,7 @@ public class PlatformerGame {
      * main function for the game
      * controls the window attributes
      */
-    public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
         MainFrame frame = new MainFrame();
 
         frame.setSize(725, 700);

@@ -57,8 +57,6 @@ public class Enemy {
         //randomly chooses left or right
         xspeed += (startDir == 1 ? 1: -1);
 
-        System.out.println("X: " + x);
-
         //sets boundaries for speed
         if(xspeed > 0 && xspeed < 0.75){
             xspeed = 0;
@@ -66,12 +64,31 @@ public class Enemy {
         if(xspeed < 0 && xspeed > -0.75){
             xspeed = 0;
         }
-        if(xspeed > 5){
-            xspeed = 5;
+        if(panel.time >= 30000){
+            if(xspeed > 5){
+                xspeed = 5;
+            }
+            if(xspeed < -5){
+                xspeed = -5;
+            }
         }
-        if(xspeed < -5){
-            xspeed = -5;
+        else if(panel.time <  30000){
+            if(xspeed > 8){
+                xspeed = 8;
+            }
+            if(xspeed < -8){
+                xspeed = -8;
+            }
         }
+        else if(panel.time <  15000){
+            if(xspeed > 10){
+                xspeed = 10;
+            }
+            if(xspeed < -10){
+                xspeed = -10;
+            }
+        }
+
 
 
         hitBox.x += xspeed;

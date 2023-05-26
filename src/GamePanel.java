@@ -134,11 +134,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
 
                 try {
                     player.set();
-                } catch (UnsupportedAudioFileException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } catch (LineUnavailableException e) {
+                } catch (UnsupportedAudioFileException | LineUnavailableException | IOException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
 
@@ -209,24 +205,24 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
              }
 
              //3rd row of floating walls
-             for (int i = 14; i <= 18; i++) {
+             for (int i = 14; i <= 17; i++) {
                  walls.add(new Wall(offset + i * s, 350, s, s));
              }
 
-             for (int i = 22; i <= 26; i++) {
+             for (int i = 23; i <= 26; i++) {
                  walls.add(new Wall(offset + i * s, 350, s, s));
              }
 
              //4th row of walls
-             for (int i = 9; i <= 12; i++) {
+             for (int i = 10; i <= 12; i++) {
                  walls.add(new Wall(offset + i * s, 250, s, s));
              }
 
-             for (int i = 18; i <= 22; i++) {
+             for (int i = 19; i <= 21; i++) {
                  walls.add(new Wall(offset + i * s, 250, s, s));
              }
 
-             for (int i = 28; i <= 31; i++) {
+             for (int i = 28; i <= 30; i++) {
                  walls.add(new Wall(offset + i * s, 250, s, s));
              }
          }
@@ -238,14 +234,15 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
      */
     public void spawnCoins(){
         int coinX = (int) (Math.random() * 625) + 50;
-        int coinY = (int) (Math.random() * 625) + 50;
+        int coinY = (int) (Math.random() * 570) + 50;
 
-        while(coinX >= 200 && coinX <= 550){
+        while((coinX >= 150 && coinX <= 550) && !(coinY < 600)){
             System.out.println("in a bad place! X: " + coinX);
             coinX = (int) (Math.random() * 625) + 50;
         }
 
         while(coinY <= 250){
+            System.out.println("in a bad place! Y: " + coinY);
             coinY = (int) (Math.random() * 625) + 50;
         }
 
@@ -343,7 +340,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         gtd.drawImage(i.getImage(), 115, 37, 15, 15, null);
         gtd.drawImage(i.getImage(), 135, 37, 15, 15, null);
         gtd.drawString("Score: " + points, 160, 50);
-        gtd.drawString("Time: " + Math.round((time/1000) * timerDecimals) / timerDecimals, 240, 50);
+        gtd.drawString("Time: " + Math.round((time/1000) * timerDecimals) / timerDecimals, 260, 50);
 
         if(lives == 2){
             gtd.setColor(Color.BLACK);

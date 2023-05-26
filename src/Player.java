@@ -49,6 +49,12 @@ public class Player {
         width = 25;
         height = 50;
         hitBox = new Rectangle(x, y, width, height);
+        /*
+        File jumpSound = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/smw_jump.wav");
+        audioStream = AudioSystem.getAudioInputStream(jumpSound);
+        this.jumpSound = AudioSystem.getClip();
+        this.jumpSound.open(audioStream);
+         */
 
     }
 
@@ -57,7 +63,7 @@ public class Player {
      * also determines how the player can move
      * controls the amt of lives left of the player based on x position
      */
-    public void set() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    public void set() throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
         //allows player to move left and right
         if(keyLeft && keyRight || !keyLeft && !keyRight){
             xspeed *= 0.8;
@@ -85,13 +91,13 @@ public class Player {
         }
 
         //jumping/gravity
-        File jumpSound = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/smw_jump.wav");
-        audioStream = AudioSystem.getAudioInputStream(jumpSound);
-        this.jumpSound = AudioSystem.getClip();
-        this.jumpSound.open(audioStream);
+        /*
+
+         */
 
         if (keyUp) {
             //checks collision w ground
+            //jumpSound.start();
             hitBox.y++;
             for(Wall wall : panel.walls){
                 if(wall.hitBox.intersects(hitBox)){
@@ -137,18 +143,20 @@ public class Player {
         hitBox.y = y;
 
         //coin sound effect
+        // THIS IS AN ERROR: FOR SOME REASON IT RUNS OUT OF MEMORY
+        /*
         File coinSound = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/smw_coin.wav");
         audioStream = AudioSystem.getAudioInputStream(coinSound);
         this.coinSound = AudioSystem.getClip();
         this.coinSound.open(audioStream);
-
-
+         */
 
         //collision with coin
         for(Coin coin : panel.coins){
             if(hitBox.intersects(coin.hitBox)){
                 panel.points += 100;
-                this.coinSound.start();
+                //this.coinSound.start();
+                //this.coinSound.close();
                 panel.coins.clear();
                 panel.spawnCoins();
             }
@@ -194,9 +202,8 @@ public class Player {
 
         /*
         USED TO DEBUG HIT BOX:
-
         gtd.setColor(Color.BLACK);
-        gtd.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
+        gtd.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height); //<-- uses hit box dimensions to draw a black box
          */
 
     }

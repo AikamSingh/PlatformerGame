@@ -13,7 +13,7 @@ import java.io.IOException;
 public class MainFrame extends javax.swing.JFrame{
 
 
-    public MainFrame() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    public MainFrame() throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
         GamePanel gamePanel = new GamePanel();
         //HomePanel homePanel = new HomePanel();
 
