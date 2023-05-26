@@ -36,6 +36,9 @@ public class Player {
 
     Timer jumpTimer;
 
+    boolean jumpBoost;
+    double fallSpeed;
+
     /**
      * constructor for the player class
      * @param x x position of player
@@ -96,17 +99,32 @@ public class Player {
          */
 
         if (keyUp) {
-            //checks collision w ground
-            //jumpSound.start();
-            hitBox.y++;
-            for(Wall wall : panel.walls){
-                if(wall.hitBox.intersects(hitBox)){
-                    yspeed = -10;
+            if(!jumpBoost){
+                //checks collision w ground
+                //jumpSound.start();
+                hitBox.y++;
+                for(Wall wall : panel.walls){
+                    if(wall.hitBox.intersects(hitBox)){
+                        yspeed = -10;
+                    }
                 }
+                hitBox.y--;
+                fallSpeed = -0.45;
             }
-            hitBox.y--;
+            else{
+                //checks collision w ground
+                //jumpSound.start();
+                hitBox.y++;
+                for(Wall wall : panel.walls){
+                    if(wall.hitBox.intersects(hitBox)){
+                        yspeed = -15;
+                    }
+                }
+                hitBox.y--;
+                fallSpeed = -0.55;
+            }
         }
-        yspeed += 0.45;
+        yspeed += fallSpeed;
 
         //horizontal collision
         hitBox.x += xspeed;
@@ -162,7 +180,18 @@ public class Player {
             }
         }
 
-        //dmg taken sound
+        //collision with power up
+
+        for(JumpPower p : panel.powerUp){
+            if(hitBox.intersects(p.hitBox)){
+                jumpBoost = true;
+                //this.coinSound.start();
+                //this.coinSound.close();
+                panel.coins.clear();
+                panel.spawnCoins();
+
+            }
+        }
 
 
         //lose life when fall off screen

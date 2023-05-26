@@ -36,6 +36,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
 
     ArrayList<Wall> walls;
     ArrayList<Coin> coins;
+    ArrayList<JumpPower> powerUp;
     ArrayList<Enemy> enemies;
     int offset;
 
