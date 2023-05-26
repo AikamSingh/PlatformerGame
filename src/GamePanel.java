@@ -6,6 +6,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.Timer;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * write description
@@ -38,8 +45,11 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
     Rectangle restartRect;
     Rectangle homeRect;
 
-    double timerDecimals = Math.pow(10, 1); //rounds timer (10, num decimal places)
+    File musicFile;
+    Clip musicClip;
+    AudioInputStream audioStream;
 
+    double timerDecimals = Math.pow(10, 1); //rounds timer (10, num decimal places)
 
     Font buttonFont = new Font("Arial", Font.BOLD, 30);
     Font scoreFont = new Font("Arial", Font.BOLD, 15);
@@ -54,7 +64,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
      * constructor for class GamePanel
      * will be main panel in which the game takes place
      */
-    public GamePanel() {
+    public GamePanel() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         restartRect = new Rectangle(550, 25, 50, 50);
         homeRect = new Rectangle(625, 25, 50, 50);
 
@@ -79,6 +89,14 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         spawnCoins();
         spawnEnemies();
 
+
+        musicFile = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/mariomusic.wav");
+        audioStream = AudioSystem.getAudioInputStream(musicFile);
+        musicClip = AudioSystem.getClip();
+
+        musicClip.open(audioStream);
+       musicClip.start();
+
         gameTimer = new Timer();
         countdown = new Timer();
 
@@ -97,7 +115,15 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
 
                 time -= 17;
 
-                player.set();
+                try {
+                    player.set();
+                } catch (UnsupportedAudioFileException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (LineUnavailableException e) {
+                    throw new RuntimeException(e);
+                }
 
                 if(enemies.size() > 0){
                     enemies.get(0).set();
@@ -329,6 +355,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
             walls.clear();
             coins.clear();
             enemies.clear();
+            musicClip.stop();
 
             player.x = 800;
 
@@ -357,6 +384,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
             walls.clear();
             coins.clear();
             enemies.clear();
+            musicClip.stop();
 
             player.x = 800;
 

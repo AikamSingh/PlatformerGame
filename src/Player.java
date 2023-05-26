@@ -1,5 +1,8 @@
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * write description
@@ -26,19 +29,28 @@ public class Player {
     boolean keyDown;
     private String image = "/Assets/PlayerLeft.png";
 
+    File musicFile;
+    Clip coinSound;
+    AudioInputStream audioStream;
+
     /**
      * constructor for the player class
      * @param x x position of player
      * @param y y position of player
      * @param panel panel which the character will appear in
      */
-    public Player(int x, int y, GamePanel panel){
+    public Player(int x, int y, GamePanel panel) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
         this.panel =  panel;
         this.x = x;
         this.y = y;
         width = 25;
         height = 50;
         hitBox = new Rectangle(x, y, width, height);
+        File coinSound = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/smw_coin.wav");
+        audioStream = AudioSystem.getAudioInputStream(coinSound);
+        this.coinSound = AudioSystem.getClip();
+
+        this.coinSound.open(audioStream);
     }
 
     /**
@@ -46,7 +58,7 @@ public class Player {
      * also determines how the player can move
      * controls the amt of lives left of the player based on x position
      */
-    public void set(){
+    public void set() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         //allows player to move left and right
         if(keyLeft && keyRight || !keyLeft && !keyRight){
             xspeed *= 0.8;
@@ -120,19 +132,25 @@ public class Player {
         hitBox.x = x;
         hitBox.y = y;
 
+
+
+        //collision with coin
         for(Coin coin : panel.coins){
             if(hitBox.intersects(coin.hitBox)){
                 panel.points += 100;
+                this.coinSound.start();
                 panel.coins.clear();
                 panel.spawnCoins();
             }
         }
 
+        //lose life when fall off screen
         if(y > 800){
             panel.lives--;
             panel.reset();
         }
 
+        //enemy collision
         for(Enemy e : panel.enemies){
             if(hitBox.intersects(e.hitBox)){
                 panel.lives--;
@@ -146,8 +164,9 @@ public class Player {
      * @param gtd graphics variable
      */
     public void draw(Graphics2D gtd){
+        //changes sprite based on direction you are facing
         Image playerimg = getPlayerImage();
-        if (xspeed < 0 ){
+        if (xspeed < 0 ) {
             facingRight = true;
         }
         else if (xspeed > 0) {
@@ -161,6 +180,8 @@ public class Player {
         }
 
         /*
+        USED TO DEBUG HIT BOX:
+
         gtd.setColor(Color.BLACK);
         gtd.drawRect(hitBox.x, hitBox.y, hitBox.width, hitBox.height);
          */

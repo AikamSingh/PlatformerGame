@@ -1,5 +1,8 @@
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * write description
@@ -14,7 +17,7 @@ public class PlatformerGame {
      * main function for the game
      * controls the window attributes
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         MainFrame frame = new MainFrame();
 
         frame.setSize(725, 700);

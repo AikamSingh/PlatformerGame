@@ -1,4 +1,7 @@
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
+import java.io.IOException;
 
 /**
  * write description
@@ -10,7 +13,7 @@ import java.awt.*;
 public class MainFrame extends javax.swing.JFrame{
 
 
-    public MainFrame(){
+    public MainFrame() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         GamePanel gamePanel = new GamePanel();
         //HomePanel homePanel = new HomePanel();
 
