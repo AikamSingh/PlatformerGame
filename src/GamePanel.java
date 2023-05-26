@@ -449,6 +449,22 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         if(e.getKeyChar() == 'h'){
             home = true;
         }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT ) {
+            //Right arrow key code
+            player.keyRight = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT ) {
+            //Left arrow key code
+            player.keyLeft = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP ) {
+            //Up arrow key code
+            player.keyUp = true;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN ) {
+            //Down arrow key code
+            player.keyDown = true;
+        }
 
 
     }
@@ -469,6 +485,22 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         }
         if(e.getKeyChar() == 's'){
             player.keyDown = false ;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT ) {
+            //Right arrow key code
+            player.keyRight = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT ) {
+            //Left arrow key code
+            player.keyLeft = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_UP ) {
+            //Up arrow key code
+            player.keyUp = false;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN ) {
+            //Down arrow key code
+            player.keyDown = false;
         }
     }
 
