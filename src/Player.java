@@ -32,6 +32,9 @@ public class Player {
     File musicFile;
     Clip coinSound;
     AudioInputStream audioStream;
+    Clip jumpSound;
+
+    Timer jumpTimer;
 
     /**
      * constructor for the player class
@@ -46,11 +49,7 @@ public class Player {
         width = 25;
         height = 50;
         hitBox = new Rectangle(x, y, width, height);
-        File coinSound = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/smw_coin.wav");
-        audioStream = AudioSystem.getAudioInputStream(coinSound);
-        this.coinSound = AudioSystem.getClip();
 
-        this.coinSound.open(audioStream);
     }
 
     /**
@@ -86,6 +85,11 @@ public class Player {
         }
 
         //jumping/gravity
+        File jumpSound = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/smw_jump.wav");
+        audioStream = AudioSystem.getAudioInputStream(jumpSound);
+        this.jumpSound = AudioSystem.getClip();
+        this.jumpSound.open(audioStream);
+
         if (keyUp) {
             //checks collision w ground
             hitBox.y++;
@@ -132,6 +136,12 @@ public class Player {
         hitBox.x = x;
         hitBox.y = y;
 
+        //coin sound effect
+        File coinSound = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/smw_coin.wav");
+        audioStream = AudioSystem.getAudioInputStream(coinSound);
+        this.coinSound = AudioSystem.getClip();
+        this.coinSound.open(audioStream);
+
 
 
         //collision with coin
@@ -143,6 +153,9 @@ public class Player {
                 panel.spawnCoins();
             }
         }
+
+        //dmg taken sound
+
 
         //lose life when fall off screen
         if(y > 800){

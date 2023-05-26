@@ -49,6 +49,14 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
     Clip musicClip;
     AudioInputStream audioStream;
 
+    File winFile;
+    Clip winClip;
+    AudioInputStream winAudioStream;
+
+    File loseFile;
+    Clip loseClip;
+    AudioInputStream loseAudioStream;
+
     double timerDecimals = Math.pow(10, 1); //rounds timer (10, num decimal places)
 
     Font buttonFont = new Font("Arial", Font.BOLD, 30);
@@ -93,9 +101,18 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
         musicFile = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/mariomusic.wav");
         audioStream = AudioSystem.getAudioInputStream(musicFile);
         musicClip = AudioSystem.getClip();
-
         musicClip.open(audioStream);
-       musicClip.start();
+        musicClip.start();
+
+        winFile = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/smw_course_clear.wav");
+        winAudioStream = AudioSystem.getAudioInputStream(winFile);
+        winClip = AudioSystem.getClip();
+        winClip.open(winAudioStream);
+
+        loseFile = new File("/Users/as/Desktop/apcs/IndependentProject/src/Assets/smw_game_over.wav");
+        loseAudioStream = AudioSystem.getAudioInputStream(loseFile);
+        loseClip = AudioSystem.getClip();
+        loseClip.open(loseAudioStream);
 
         gameTimer = new Timer();
         countdown = new Timer();
@@ -356,6 +373,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
             coins.clear();
             enemies.clear();
             musicClip.stop();
+            loseClip.start();
 
             player.x = 800;
 
@@ -385,6 +403,7 @@ public class GamePanel extends javax.swing.JPanel implements ActionListener{
             coins.clear();
             enemies.clear();
             musicClip.stop();
+            winClip.start();
 
             player.x = 800;
 
